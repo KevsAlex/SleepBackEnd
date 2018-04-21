@@ -13,7 +13,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $body = json_decode(file_get_contents("php://input"), true);
     $idPaciente = $body['idPaciente'];
     $response = Cuestionario::insert($idPaciente);
-    echo $response;
+ 
     if ($response['error'] == false) {
         print json_encode($response);
 

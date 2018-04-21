@@ -23,9 +23,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                   $tipoPregunta,
                                   $idCuestionario,
                                   $score);
-    echo $response;
-    
-    
     
     if ($response['error'] == false) {
         print json_encode($response);
