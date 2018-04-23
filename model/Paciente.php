@@ -5,7 +5,7 @@
  * almacenadas en la base de datos
  */
 $root = realpath($_SERVER["DOCUMENT_ROOT"]);
-include "$root/dreamBack/DatabaseSingleton.php";
+include_once "$root/dreamBack/DatabaseSingleton.php";
 
 
 
@@ -119,8 +119,7 @@ class Paciente{
         $consulta = "SELECT idPaciente,
                             nombre,
                             idDoctor,
-                            idPaciente,
-                            idC
+                            idPaciente
                             FROM Paciente
                             WHERE idPaciente = ?";
 
@@ -170,8 +169,8 @@ class Paciente{
         $consulta = "SELECT idPaciente,
                             nombre,
                             idDoctor
-                            FROM Paciente
-                            WHERE correo = ? AND password = ?" ;
+                            FROM Paciente p, Cuestionario c
+                            WHERE p.id = ? AND password = ?" ;
 
         try {
             // Preparar sentencia
@@ -192,14 +191,6 @@ class Paciente{
         }
         
     }
-
-
-
-
-
-
-
-   
 }
 
 ?>

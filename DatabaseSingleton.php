@@ -4,7 +4,7 @@
  * para el manejo de la base de datos (en un singleton)
  */
 
-require_once 'DBConstants.php';
+include_once 'DBConstants.php';
 class Database
 {
 
