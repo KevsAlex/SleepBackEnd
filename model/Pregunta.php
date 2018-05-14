@@ -5,7 +5,7 @@
  * almacenadas en la base de datos
  */
 $root = realpath($_SERVER["DOCUMENT_ROOT"]);
-include "$root/dreamBack/DatabaseSingleton.php";
+include_once "$root/dreamBack/DatabaseSingleton.php";
 
 
 
@@ -117,6 +117,39 @@ class Pregunta{
             // Capturar primera fila del resultado
             $row = $comando->fetch(PDO::FETCH_ASSOC);
             return $row;
+
+        } catch (PDOException $e) {
+            print $e->getMessage ();
+        }
+    }
+
+     public static function getpreguntaByCuestionario($idCuestionario){
+        // Consulta de la meta
+        $consulta = "SELECT *
+                            FROM Pregunta p
+                            WHERE p.idCuestionario = ?";
+
+        try {
+            // Preparar sentencia
+            $comando = Database::getInstance()->getDb()->prepare($consulta);
+            // Ejecutar sentencia preparada
+            $comando->execute(array($idCuestionario));
+            // Capturar primera fila del resultado
+            $row = $comando->fetchAll();
+            if (!$row){
+              $response = array(
+                'error' => true,
+                'mensaje' => 'no hay ninguna pregunta asociado',
+                'preguntas' => NULL);
+              return $response;
+            }else{
+              $response = array(
+                'error' => false,
+                'mensaje' => 'hay preguntas!!',
+                'preguntas' => $row);
+              return $response;
+            }
+            
 
         } catch (PDOException $e) {
             print $e->getMessage ();

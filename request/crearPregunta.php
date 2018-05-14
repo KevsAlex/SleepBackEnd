@@ -3,7 +3,7 @@
  * Registra un nuevo paciente
  */
 $root = realpath($_SERVER["DOCUMENT_ROOT"]);
-include "$root/dreamBack/model/Pregunta.php";
+include_once "$root/dreamBack/model/Pregunta.php";
 header('Content-Type: application/json');
 
 

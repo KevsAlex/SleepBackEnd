@@ -5,7 +5,7 @@
  * almacenadas en la base de datos
  */
 $root = realpath($_SERVER["DOCUMENT_ROOT"]);
-include "$root/dreamBack/DatabaseSingleton.php";
+include_once "$root/dreamBack/DatabaseSingleton.php";
 
 
 
@@ -112,25 +112,29 @@ class Cuestionario{
         }
     }
 
-     public static function loginDoctor($nombre,$claveDoctor){
+     public static function getCuestionariosFromPaciente($idPaciente){
         // Consulta de la meta
-        $query = "SELECT    idDoctor,
-                            nombre,
-                            password,
-                            claveDoctor
-                            FROM Doctor
-                            WHERE nombre = ? AND claveDoctor = ?;";
+        $query = "SELECT    *
+                            FROM Cuestionario c
+                            WHERE c.idPaciente = ?;";
 
         try {
             
             $comando = Database::getInstance()->getDb()->prepare($query);
-            $comando->execute(array($nombre,$claveDoctor));
-            $doctorLogeado = $comando->fetch(PDO::FETCH_ASSOC);
+            $comando->execute(array($idPaciente));
+            $cuestionarios = $comando->fetchAll();
+            if (!$cuestionarios){
+              $response = array(
+                'error' => true,
+                'mensaje' => 'no hay ningun cuestionario asociado',
+                'cuestionarios' => NULL);
+                return $response;
+            }
                $response = array(
                 'error' => false,
-                'mensaje' => 'loggin exitoso',
-                'doctor' => $doctorLogeado);
-            return $response;
+                'mensaje' => 'hay cuestionarios yeaaaahhh!!',
+                'cuestionarios' => $cuestionarios);
+                return $response;
 
         } catch (PDOException $e) {
             print $e->getMessage ();

@@ -148,7 +148,43 @@ class Doctor{
             $doctorEncontrado = $comando->fetch(PDO::FETCH_ASSOC);
             if ($doctorEncontrado == false){
               $response = array(
-                'error' => trure,
+                'error' => true,
+                'mensaje' => 'no se encontro',
+                'doctor' => NULL);
+                return $response;
+            }else{
+              $response = array(
+                'error' => false,
+                'mensaje' => 'se encontro',
+                'doctor' => $doctorEncontrado);
+                return $response;
+            }
+      } catch (PDOException $e) {
+          $response = array(
+                'error' => true,
+                'mensaje' => $e->getMessage(),
+                'doctor' => NULL);
+            return $response;
+        }
+    }
+
+    public static function getDoctorById($idDoctor){
+        // Consulta de la meta
+        $query = "SELECT    idDoctor,
+                            nombre,
+                            password,
+                            claveDoctor
+                            FROM Doctor
+                            WHERE idDoctor = ?;";
+
+        try {
+            
+            $comando = Database::getInstance()->getDb()->prepare($query);
+            $comando->execute(array($idDoctor));
+            $doctorEncontrado = $comando->fetch(PDO::FETCH_ASSOC);
+            if ($doctorEncontrado == false){
+              $response = array(
+                'error' => true,
                 'mensaje' => 'no se encontro',
                 'doctor' => NULL);
                 return $response;
